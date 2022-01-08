@@ -20,7 +20,6 @@ public class DisneyCharacterService {
 
     @Transactional
     public DisneyCharacter createCharacter(DisneyCharacter disneyCharacter) {
-
         disneyCharacter.setStatus(true);
         return disneyCharacterRepository.save(disneyCharacter);
     }
@@ -42,12 +41,12 @@ public class DisneyCharacterService {
     }
 
     @Transactional
-    public List<Object[]> showNamePictureCharacter(){
+    public List<Object[]> showNamePictureCharacter() {
         return disneyCharacterRepository.showNamePictureCharacter();
     }
 
     @Transactional
-    public List<DisneyCharacter> showAllCharacter(){
+    public List<DisneyCharacter> showAllCharacter() {
         return disneyCharacterRepository.findAll();
     }
 
@@ -62,17 +61,15 @@ public class DisneyCharacterService {
     }
 
     @Transactional
-    public List<Object []> findCharacterByMovieID(Integer id){
-        List<Object[]> characterList = disneyCharacterRepository.findCharacterByMovieID(id);
+    public List<DisneyCharacter> findCharacterByMovieID(Integer id) {
+        List<DisneyCharacter> characterList = disneyCharacterRepository.findCharacterByMovieID(id);
 
         return disneyCharacterRepository.findCharacterByMovieID(id);
     }
 
     @Transactional
-    public Optional<DisneyCharacter> findCharacterById(Integer id){
+    public Optional<DisneyCharacter> findCharacterById(Integer id) {
         return disneyCharacterRepository.findById(id);
     }
-
-
 
 }

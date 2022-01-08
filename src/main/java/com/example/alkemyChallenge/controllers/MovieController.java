@@ -17,6 +17,11 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping
+    public List<Object[]> showMoviesByTitlePictureDate(){
+        return movieService.showMoviesByTitlePictureDate();
+    }
+
+    @GetMapping("/all")
     public List<Movie> getAll() {
         return movieService.showAllMovies();
     }
@@ -32,7 +37,7 @@ public class MovieController {
     }
 
     @GetMapping(value = "", params = "genre")
-    public List<Movie> getByGenre(@RequestParam("genre") String genre) {
+    public List<Movie> getByGenre(@RequestParam("genre") Integer genre) {
         return movieService.findMovieByGenre(genre);
     }
 
@@ -48,7 +53,16 @@ public class MovieController {
             movieService.deleteMovie(id);
             return "Movie Nº "+id+ " has been removed.";
         } catch (Exception e) {
-            return "Movie Nº "+id+" doesnot exist.";
+            return "Movie Nº "+id+" does not exist.";
+        }
+    }
+    @GetMapping(path = "enable/{id}")
+    public String enableMovie(@PathVariable("id") Integer id) {
+        try {
+            movieService.enableMovie(id);
+            return "Movie Nº " + id + " was enabled.";
+        } catch (Exception e) {
+            return "Movie Nº  " + id + " does not exist.";
         }
     }
 

@@ -5,10 +5,12 @@ import com.example.alkemyChallenge.services.DisneyCharacterService;
 import com.example.alkemyChallenge.services.PictureService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,20 +49,42 @@ public class DisneyCharacterController {
     }
 
     // ¡¡VER!!
-    @GetMapping(params ="id")
-    public List<Object []> findByMovies(@RequestParam("id") Integer id) {
+    @GetMapping(value ="", params = "id")
+    public List<DisneyCharacter> findByMovies(@RequestParam("id") Integer id) {
         return disneyCharacterService.findCharacterByMovieID(id);
     }
 
 
     // ¡¡VER!!
     @PostMapping("/save")
-    public DisneyCharacter saveDisneyCharacter (@ModelAttribute DisneyCharacter disneyCharacter) throws Exception{
+    public DisneyCharacter saveDisneyCharacter (@RequestBody DisneyCharacter disneyCharacter) throws Exception{
 
        /* if (!photo.isEmpty()){
             disneyCharacter.setPicture(pictureService.savePhoto(photo));
         }*/
-        return  disneyCharacterService.createCharacter(disneyCharacter);
-
+        disneyCharacter.setPicture("");
+         return disneyCharacterService.createCharacter(disneyCharacter);
     }
+
+    @DeleteMapping(path = "delete/{id}")
+    public String deleteCharacter(@PathVariable("id") Integer id){
+        try {
+            disneyCharacterService.deleteCharacter(id);
+            return "Character Nº "+id+ " has been removed.";
+        } catch (Exception e) {
+            return "Character Nº "+id+" does not exist.";
+        }
+    }
+
+    @GetMapping(path = "enable/{id}")
+    public String enableCharacter(@PathVariable("id") Integer id) {
+        try {
+            disneyCharacterService.enableCharacter(id);
+            return "Character Nº " + id + " was enabled.";
+        } catch (Exception e) {
+            return "Character Nº  " + id + " does not exist.";
+        }
+    }
+
+
 }

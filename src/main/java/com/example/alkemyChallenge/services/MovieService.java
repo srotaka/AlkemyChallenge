@@ -64,17 +64,14 @@ public class MovieService {
         }
     }
 
-    @Transactional
-    public List<Movie> moviesOrderByDateDesc(){
-        return movieRepository.findAll(Sort.by(Sort.Direction.DESC, "releaseDate"));
-    }
 
     @Transactional
     public List<Object[]> showMoviesByTitlePictureDate(){
         return movieRepository.showMoviesByTitlePictureDate();
     }
+
     @Transactional
-    public List<Movie> findMovieByGenre(String genre){
+    public List<Movie> findMovieByGenre(Integer genre){
         return movieRepository.findByGenre(genre);
     }
 

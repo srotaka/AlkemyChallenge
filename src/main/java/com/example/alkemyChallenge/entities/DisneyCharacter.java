@@ -24,22 +24,22 @@ public class DisneyCharacter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(nullable = false)
     @NotBlank(message = "Name is required")
     private String name;
 
-    @Column
-    @NotBlank
+    @Column(nullable = false)
+    @NotBlank(message = "Age is required")
     @Positive(message = "Age cannot be lower than 0")
     private Integer age;
 
-    @Column
-    @NotBlank
+    @Column(nullable = false)
+    @NotBlank(message = "Weight is required")
     @DecimalMin(value = "0.1", message = "Weight must be greater than 0.1")
     private Double weight;
 
-    @Column
-    @NotBlank
+    @Column(nullable = false)
+    @NotBlank(message = "A short story is required")
     private String story;
 
     @NotEmpty(message = "Filmography is required")

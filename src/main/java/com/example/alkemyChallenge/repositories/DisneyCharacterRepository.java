@@ -28,6 +28,6 @@ public interface DisneyCharacterRepository extends JpaRepository<DisneyCharacter
     List<DisneyCharacter> showCharacterByNamePicture();
 
     @Query(value = "SELECT c.name, m.title FROM characters c INNER JOIN rel_character_movie r ON c.id = r.id_character INNER JOIN movie m ON  m.id = r.id_movie WHERE m.id= ?1", nativeQuery = true)
-    List<Object []> findCharacterByMovieID(Integer id);
+    List<DisneyCharacter> findCharacterByMovieID(Integer id);
 
 }

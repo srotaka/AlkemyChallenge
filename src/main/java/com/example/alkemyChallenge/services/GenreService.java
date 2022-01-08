@@ -16,14 +16,9 @@ public class GenreService {
     @Autowired
     GenreRepository genreRepository;
 
-    public void createGenre(String name, List<Movie> moviesList, String picture) {
-        Genre genre = new Genre();
-
-        genre.setName(name);
-        genre.setMoviesList(moviesList);
-        genre.setPicture(picture);
+    public Genre createGenre(Genre genre) {
         genre.setStatus(true);
-        genreRepository.save(genre);
+        return genreRepository.save(genre);
     }
 
     @Transactional
@@ -33,7 +28,7 @@ public class GenreService {
     }
 
     @Transactional
-    public List<Genre> showAllGenres(){
+    public List<Genre> showAllGenres() {
         return genreRepository.findAll();
     }
 

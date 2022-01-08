@@ -17,11 +17,12 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     void enableMovie(@Param("id") Integer id);
 
     // Query para mostrar movies con 3 atributos
-    @Query(value = "SELECT title, picture, releaseDate FROM movie", nativeQuery = true)
+    @Query("SELECT title, picture, releaseDate FROM Movie")
     List<Object[]> showMoviesByTitlePictureDate();
 
     List<Movie> findByTitle(String title);
 
-    List<Movie> findByGenre(String genre);
+    @Query(value = "SELECT * FROM movie WHERE genre_id = ?1", nativeQuery = true)
+    List<Movie> findByGenre(Integer genre);
 
 }
