@@ -3,9 +3,13 @@ package com.example.alkemyChallenge.controllers;
 
 import com.example.alkemyChallenge.entities.Movie;
 import com.example.alkemyChallenge.services.MovieService;
+import com.example.alkemyChallenge.services.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +19,8 @@ public class MovieController {
 
     @Autowired
     private MovieService movieService;
+    @Autowired
+    private PictureService pictureService;
 
     @GetMapping
     public List<Object[]> showMoviesByTitlePictureDate(){
@@ -67,8 +73,10 @@ public class MovieController {
     }
 
     @PostMapping("/save")
-    public Movie saveMovie(@RequestBody Movie movie) {
-        movie.setPicture("");
+    public Movie saveMovie(@Valid @ModelAttribute Movie movie, BindingResult result, @RequestParam (value = "picture") MultipartFile photo) throws Exception{
+        if (!photo.isEmpty()) {
+            movie.setPicture(pictureService.savePhoto(photo));
+        }
         return movieService.createMovie(movie);
     }
 }

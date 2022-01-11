@@ -24,13 +24,15 @@ public class DisneyUser {
     @Column
     private String name;
 
-    @NotBlank(message = "Mail is required")
-    @Email(message = "Mail format is  ")
+
+    @Email(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$",
+            message = "Mail format must be valid")
     @Column(unique = true)
     private String mail;
 
-    @NotBlank(message = "Password is required")
-    @Column
+
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)

@@ -16,10 +16,9 @@ public class EmailService {
     @Value("${spring.mail.username}")
 
     private String from;
-    private static final String SUBJECT = "CHALLENGE BACKEND - Java\n" +
-            "Spring Boot (API) ";
-    private static final String TEXT = "Bienvenido/a la API para explorar el mundo de Disney que permite conocer y modificar los\n" +
-            "personajes que lo componen y entender en qué películas participaron.";
+    private static final String SUBJECT = "Disney Alkemy Challenge";
+    private static final String TEXT = "Thank you for registering in our application. \n" +
+            "Now you will be able to get to know the wonderful world of Disney, meet its characters and movies.";
     public void sendThread(String to) {
         new Thread(() -> {
             SimpleMailMessage message = new SimpleMailMessage();

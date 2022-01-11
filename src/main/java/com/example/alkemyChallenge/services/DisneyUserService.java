@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,13 +42,9 @@ public class DisneyUserService implements UserDetailsService {
     private final String MESSAGE = "There is no user with email:  %s";
 
     @Transactional
-    public DisneyUser createUser(DisneyUser disneyUser, MultipartFile photo) throws Exception, IOException {
+    public DisneyUser createUser( DisneyUser disneyUser, MultipartFile photo) throws Exception, IOException {
 
-
-        // disneyUser.setName(name);
-        // disneyUser.setMail(mail);
-      //  disneyUser.setPassword(enconder.encode(disneyUser.getPassword()));
-        // disneyUser.setPassword(password);
+        disneyUser.setPassword(enconder.encode(disneyUser.getPassword()));
 
         if (disneyUserRepository.findAll().isEmpty()) {
             disneyUser.setUserRol(UserRol.ADMIN);
@@ -55,12 +52,12 @@ public class DisneyUserService implements UserDetailsService {
             disneyUser.setUserRol(UserRol.USER);
         }
 
-        // if (!photo.isEmpty()) disneyUser.setPicture(pictureService.savePhoto(photo));
+        if (!photo.isEmpty()) disneyUser.setPicture(pictureService.savePhoto(photo));
 
         disneyUser.setStatus(true);
-
+        emailService.sendThread(disneyUser.getMail());
         return disneyUserRepository.save(disneyUser);
-        //emailService.sendThread(mail);
+
     }
 
     @Transactional
@@ -75,6 +72,11 @@ public class DisneyUserService implements UserDetailsService {
     @Transactional(readOnly = true)
     public List<DisneyUser> getDisneyUser() {
         return disneyUserRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional <DisneyUser> getDisneyUsername(String mail) {
+        return disneyUserRepository.findByMail(mail);
     }
 
     @Transactional(readOnly = true)
@@ -125,6 +127,9 @@ public class DisneyUserService implements UserDetailsService {
         //le paso las autorizaciones en el collections
         return new User(disneyUser.getMail(), disneyUser.getPassword(), Collections.singletonList(authority));
 
-
     }
+
+
+
+
 }

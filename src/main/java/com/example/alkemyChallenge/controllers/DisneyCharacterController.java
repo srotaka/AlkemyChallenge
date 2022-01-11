@@ -1,6 +1,7 @@
 package com.example.alkemyChallenge.controllers;
 
 import com.example.alkemyChallenge.entities.DisneyCharacter;
+import com.example.alkemyChallenge.entities.Movie;
 import com.example.alkemyChallenge.services.DisneyCharacterService;
 import com.example.alkemyChallenge.services.PictureService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,16 +55,10 @@ public class DisneyCharacterController {
         return disneyCharacterService.findCharacterByMovieID(id);
     }
 
-
-    // ¡¡VER!!
     @PostMapping("/save")
-    public DisneyCharacter saveDisneyCharacter (@RequestBody DisneyCharacter disneyCharacter) throws Exception{
+    public DisneyCharacter saveCharacter(@Valid @ModelAttribute DisneyCharacter disneyCharacter, BindingResult result, @RequestParam (value = "picture") MultipartFile photo) throws Exception{
 
-       /* if (!photo.isEmpty()){
-            disneyCharacter.setPicture(pictureService.savePhoto(photo));
-        }*/
-        disneyCharacter.setPicture("");
-         return disneyCharacterService.createCharacter(disneyCharacter);
+        return disneyCharacterService.createCharacter(disneyCharacter, photo);
     }
 
     @DeleteMapping(path = "delete/{id}")
