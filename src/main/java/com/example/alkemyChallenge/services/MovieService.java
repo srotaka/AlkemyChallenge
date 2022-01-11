@@ -26,9 +26,9 @@ public class MovieService {
     }
 
     @Transactional
-    public void editMovie(Integer id, String title, LocalDate releaseDate, Integer rate, List<DisneyCharacter> characterList, Genre genre, String picture) {
+    public void editMovie(Integer movieId, String title, LocalDate releaseDate, Integer rate, List<DisneyCharacter> characterList, Genre genre, String picture) {
 
-        Movie movie = movieRepository.findById(id).get();
+        Movie movie = movieRepository.findById(movieId).get();
         movieRepository.save(movie);
     }
 
@@ -38,13 +38,13 @@ public class MovieService {
     }
 
     @Transactional
-    public void deleteMovie(Integer id) {
-        movieRepository.deleteById(id);
+    public void deleteMovie(Integer movieId) {
+        movieRepository.deleteById(movieId);
     }
 
     @Transactional
-    public void enableMovie(Integer id) {
-        movieRepository.enableMovie(id);
+    public void enableMovie(Integer movieId) {
+        movieRepository.enableMovie(movieId);
     }
 
     @Transactional
@@ -76,7 +76,7 @@ public class MovieService {
     }
 
     @Transactional
-    public Optional<Movie> findById(Integer id){
-        return movieRepository.findById(id);
+    public Optional<Movie> findById(Integer movieId){
+        return movieRepository.findById(movieId);
     }
 }

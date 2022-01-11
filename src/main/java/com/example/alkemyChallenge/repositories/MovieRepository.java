@@ -13,8 +13,8 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     @Modifying
-    @Query("UPDATE Movie m SET m.status = true WHERE m.id = :id")
-    void enableMovie(@Param("id") Integer id);
+    @Query("UPDATE Movie m SET m.status = true WHERE m.movieId = :movieId")
+    void enableMovie(@Param("movieId") Integer movieId);
 
     // Query para mostrar movies con 3 atributos
     @Query("SELECT title, picture, releaseDate FROM Movie")

@@ -6,9 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
@@ -22,7 +20,7 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer movieId;
 
     @NotBlank(message = "Title is required")
     @Column(nullable = false)
@@ -60,8 +58,8 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(Integer id, String title, LocalDate releaseDate, Integer rate, List<DisneyCharacter> charactersList, Genre genre, String picture, Boolean status) {
-        this.id = id;
+    public Movie(Integer movieId, String title, LocalDate releaseDate, Integer rate, List<DisneyCharacter> charactersList, Genre genre, String picture, Boolean status) {
+        this.movieId = movieId;
         this.title = title;
         this.releaseDate = releaseDate;
         this.rate = rate;
@@ -74,7 +72,7 @@ public class Movie {
     @Override
     public String toString() {
         return "MovieSerie{" +
-                "id=" + id +
+                "id=" + movieId +
                 ", title='" + title + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", rate=" + rate +

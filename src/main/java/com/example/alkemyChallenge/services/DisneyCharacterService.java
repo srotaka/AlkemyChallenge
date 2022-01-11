@@ -3,6 +3,7 @@ package com.example.alkemyChallenge.services;
 import com.example.alkemyChallenge.entities.DisneyCharacter;
 import com.example.alkemyChallenge.entities.Movie;
 import com.example.alkemyChallenge.repositories.DisneyCharacterRepository;
+import com.example.alkemyChallenge.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +19,8 @@ public class DisneyCharacterService {
     private DisneyCharacterRepository disneyCharacterRepository;
     @Autowired
     private PictureService pictureService;
+    @Autowired
+    private MovieRepository movieRepository;
 
     @Transactional
     public DisneyCharacter createCharacter(DisneyCharacter disneyCharacter, MultipartFile photo) throws Exception {
@@ -64,10 +67,9 @@ public class DisneyCharacterService {
     }
 
     @Transactional
-    public List<DisneyCharacter> findCharacterByMovieID(Integer id) {
-        List<DisneyCharacter> characterList = disneyCharacterRepository.findCharacterByMovieID(id);
+    public List<DisneyCharacter> findCharacterByMovieID(Integer movieId) {
+        return disneyCharacterRepository.findCharacterByMovieID(movieId);
 
-        return disneyCharacterRepository.findCharacterByMovieID(id);
     }
 
     @Transactional
@@ -75,4 +77,22 @@ public class DisneyCharacterService {
         return disneyCharacterRepository.findById(id);
     }
 
+
+    @Transactional
+    public List<DisneyCharacter> findCharactersByMovie(Integer movieId) throws Exception {
+        try {
+            Movie movie = movieRepository.findById(movieId).get();
+            if (movie == null){
+                throw new Exception("No movie found with id " + movieId);
+            }
+            List<DisneyCharacter> charactersListByMovie = movie.getCharactersList();
+            if (!charactersListByMovie.isEmpty()) {
+                return charactersListByMovie;
+            } else {
+                throw new Exception("This movie has no characters yet");
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 }
