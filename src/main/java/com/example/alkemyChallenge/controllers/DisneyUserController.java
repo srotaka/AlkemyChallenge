@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
-public class DisneyUserController {
+public class    DisneyUserController {
 
     @Autowired
     private DisneyUserService disneyUserService;

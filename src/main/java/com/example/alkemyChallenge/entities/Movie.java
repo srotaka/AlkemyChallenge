@@ -28,7 +28,7 @@ public class Movie {
     @Column(nullable = false)
     private String title;
 
-    @NotBlank(message = "Release date is required")
+    //@NotBlank(message = "Release date is required")
     @Column(nullable = false)
     private LocalDate releaseDate;
 
@@ -42,7 +42,7 @@ public class Movie {
     @JoinTable(name = "rel_character_movie",
             joinColumns = @JoinColumn(name = "id_movie", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "id_character", nullable = false))
-    @NotEmpty(message = "Character List is required")
+    //@NotEmpty(message = "Character List is required")
     private List<DisneyCharacter> charactersList;
 
     @ManyToOne

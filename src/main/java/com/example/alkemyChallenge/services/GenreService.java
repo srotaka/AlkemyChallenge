@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GenreService {
@@ -42,4 +43,8 @@ public class GenreService {
         genreRepository.enableGenre(id);
     }
 
+    @Transactional
+    public Optional<Genre> findById(Integer id){
+        return genreRepository.findById(id);
+    }
 }
