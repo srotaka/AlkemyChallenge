@@ -20,14 +20,14 @@ public interface DisneyCharacterRepository extends JpaRepository<DisneyCharacter
     @Query(value = "SELECT picture, name FROM characters", nativeQuery = true)
     List<Object[]> showNamePictureCharacter();
 
-    List<DisneyCharacter> findByName(String name);
-
-    List<DisneyCharacter> findByAge(Integer age);
-
     @Query(value = "SELECT name, picture FROM disney-character", nativeQuery = true)
     List<DisneyCharacter> showCharacterByNamePicture();
 
     @Query(value = "SELECT c.name, m.title FROM characters c INNER JOIN rel_character_movie r ON c.id = r.id_character INNER JOIN movie m ON  m.movie_id = r.id_movie WHERE m.movie_id= ?1", nativeQuery = true)
     List<DisneyCharacter> findCharacterByMovieID(Integer movieId);
+
+    List<DisneyCharacter> findByName(String name);
+
+    List<DisneyCharacter> findByAge(Integer age);
 
 }

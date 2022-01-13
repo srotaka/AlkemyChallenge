@@ -20,4 +20,6 @@ public interface DisneyUserRepository extends JpaRepository<DisneyUser, Integer>
     @Query("UPDATE DisneyUser u SET u.status = true WHERE u.id = :id")
     void enableUser(@Param("id") Integer id);
 
+ /*   @Query(value = "SELECT * FROM disney_users u WHERE u.mail = :user AND u.password = :psw", nativeQuery = true)
+    Optional<DisneyUser> findByUserAndPassword(@Param("mail") String mail, @Param("psw") String psw);*/
 }

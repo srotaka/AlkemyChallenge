@@ -129,7 +129,15 @@ public class DisneyUserService implements UserDetailsService {
 
     }
 
-
+ /*   @Transactional
+    public DisneyUser findByUserAndPassword(String usuario, String psw) throws Exception {
+        try {
+            Optional<DisneyUser> userOptional = disneyUserRepository.findByUserAndPassword(usuario, psw);
+            return userOptional.get();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }*/
 
 
 }

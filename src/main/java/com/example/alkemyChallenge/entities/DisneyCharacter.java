@@ -53,6 +53,7 @@ public class DisneyCharacter {
     @Column
     private Boolean status;
 
+
     //Constructors
     public DisneyCharacter(Integer id, String name, Integer age, Double weight, String story, List<Movie> filmography, String picture, Boolean status) {
         this.id = id;
@@ -63,6 +64,7 @@ public class DisneyCharacter {
         this.filmography = filmography;
         this.picture = picture;
         this.status = status;
+
     }
 
     public DisneyCharacter() {

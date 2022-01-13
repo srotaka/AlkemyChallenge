@@ -62,7 +62,6 @@ public class DisneyCharacterController {
         }
     }
 
-
     @PostMapping("/save")
     public DisneyCharacter saveCharacter(@Valid @ModelAttribute DisneyCharacter disneyCharacter, BindingResult result, @RequestParam (value = "picture") MultipartFile photo) throws Exception{
 

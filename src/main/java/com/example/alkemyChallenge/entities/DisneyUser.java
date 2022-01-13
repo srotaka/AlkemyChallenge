@@ -43,10 +43,12 @@ public class DisneyUser {
 
     private Boolean status;
 
+    private String token;
+
       public DisneyUser() {
     }
 
-    public DisneyUser(Integer id, String name, String mail, String password, UserRol userRol, String picture, Boolean status) {
+    public DisneyUser(Integer id, String name, String mail, String password, UserRol userRol, String picture, Boolean status, String token) {
         this.id = id;
         this.name = name;
         this.mail = mail;
@@ -54,5 +56,6 @@ public class DisneyUser {
         this.userRol = userRol;
         this.picture = picture;
         this.status = status;
+        this.token = token;
     }
 }
