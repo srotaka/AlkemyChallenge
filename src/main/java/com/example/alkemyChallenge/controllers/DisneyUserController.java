@@ -2,6 +2,7 @@ package com.example.alkemyChallenge.controllers;
 
 import com.example.alkemyChallenge.entities.DisneyUser;
 import com.example.alkemyChallenge.services.DisneyUserService;
+import com.example.alkemyChallenge.services.PictureService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class    DisneyUserController {
     @Autowired
     private DisneyUserService disneyUserService;
 
+    @Autowired
+    private PictureService pictureService;
+
     private DisneyUser disneyUser;
 
 /*    @PostMapping("/register")
@@ -38,10 +42,14 @@ public class    DisneyUserController {
             List<DisneyUser> disneyUsersList = disneyUserService.getDisneyUser();
             for (DisneyUser disneyUser1 : disneyUsersList) {
                 if (disneyUser1.getMail().equals(disneyUser.getMail())) {
-                    return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("Ya se encuentra registrado un usuario con ese nombre");
+                    return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("Email already register.");
                 }
             }
-            DisneyUser usuario = disneyUserService.createUser(disneyUser, photo);
+            if (!photo.isEmpty()) {
+                disneyUser.setPicture(pictureService.savePhoto(photo));
+            }
+
+            DisneyUser usuario = disneyUserService.createUser(disneyUser);
             String token = getJWTToken(disneyUser.getMail());
             usuario.setToken(token);
             return ResponseEntity.status(HttpStatus.OK).body(disneyUser);
@@ -56,7 +64,7 @@ public class    DisneyUserController {
             if (disneyUser != null) {
                 UserDetails userDetails = disneyUserService.loadUserByUsername(disneyUser.getMail());
                 if (userDetails == null) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"Error. No se encontró un usuario registrado con ese nombre y contraseña .\"}");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"Error: User not found.\"}");
                 }
                 String token = getJWTToken(disneyUser.getMail());
                 disneyUser.setToken(token);
@@ -82,7 +90,7 @@ public class    DisneyUserController {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
+                .setExpiration(new Date(System.currentTimeMillis() + 2700000))
                 .signWith(SignatureAlgorithm.HS512,
                         secretKey.getBytes()).compact();
 
@@ -93,57 +101,5 @@ public class    DisneyUserController {
     public List<DisneyUser> getAll() {
         return disneyUserService.getDisneyUser();
     }
-/*
-    @PostMapping("/login")
-    public DisneyUser loginUser(@Valid @ModelAttribute DisneyUser disneyUser, BindingResult bindingResult) {
-        try {
-            if (disneyUser != null) {
-                UserDetails user = disneyUserService.loadUserByUsername(disneyUser.getMail());
-                if (user != null) {
-                    return disneyUserService.findByMail(disneyUser.getMail());
-                } else {
-                    return null;
-                }
 
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @PostMapping("/update")
-    public void save(@Valid @ModelAttribute DisneyUser disneyUser, BindingResult result, @RequestParam(value = "picture") MultipartFile photo) throws Exception, IOException {
-        if (!photo.isEmpty()) {
-            disneyUser.setPicture(disneyUser.getPicture());
-        }
-        disneyUserService.createUser(disneyUser, photo);
-    }
-
-    @GetMapping("/all")
-    public List<DisneyUser> getAll() {
-        return disneyUserService.getDisneyUser();
-    }
-
-    @DeleteMapping(path = "delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id) {
-        try {
-            disneyUserService.deleteUser(id);
-            return "El usuario " + id + " fue eliminado";
-        } catch (Exception e) {
-            return "El usuario " + id + " no existe";
-        }
-    }
-
-    @GetMapping(path = "enable/{id}")
-    public String enableUser(@PathVariable("id") Integer id) {
-        try {
-            disneyUserService.enableUser(id);
-            return "El usuario " + id + " fue habilitado";
-        } catch (Exception e) {
-            return "El usuario " + id + " no existe";
-        }
-    }*/
 }

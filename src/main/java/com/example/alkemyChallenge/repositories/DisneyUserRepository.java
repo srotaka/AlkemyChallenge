@@ -13,13 +13,11 @@ import java.util.Optional;
 public interface DisneyUserRepository extends JpaRepository<DisneyUser, Integer> {
 
     Optional<DisneyUser> findByMail(String mail);
-    // Creación de consulta a partir del nombre de método
+
     boolean existsByMail(String mail);
 
     @Modifying
     @Query("UPDATE DisneyUser u SET u.status = true WHERE u.id = :id")
     void enableUser(@Param("id") Integer id);
 
- /*   @Query(value = "SELECT * FROM disney_users u WHERE u.mail = :user AND u.password = :psw", nativeQuery = true)
-    Optional<DisneyUser> findByUserAndPassword(@Param("mail") String mail, @Param("psw") String psw);*/
 }

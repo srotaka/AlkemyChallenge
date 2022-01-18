@@ -22,7 +22,7 @@ public class MovieService {
     @Transactional
     public Movie createMovie(Movie movie) {
         movie.setStatus(true);
-       return movieRepository.save(movie);
+        return movieRepository.save(movie);
     }
 
     @Transactional
@@ -33,8 +33,8 @@ public class MovieService {
     }
 
     @Transactional
-    public List<Movie> showAllMovies(){
-     return movieRepository.findAll();
+    public List<Movie> showAllMovies() {
+        return movieRepository.findAll();
     }
 
     @Transactional
@@ -48,16 +48,16 @@ public class MovieService {
     }
 
     @Transactional
-    public List<Movie> findMovieByTitle(String title){
+    public List<Movie> findMovieByTitle(String title) {
         return movieRepository.findByTitle(title);
     }
 
     @Transactional
-    public List<Movie> sortMovieByDate(String order){
+    public List<Movie> sortMovieByDate(String order) {
 
-        if (order.equals("ASC")){
+        if (order.equals("ASC")) {
             return movieRepository.findAll(Sort.by(Sort.Direction.ASC, "releaseDate"));
-        } else if (order.equals("DESC")){
+        } else if (order.equals("DESC")) {
             return movieRepository.findAll(Sort.by(Sort.Direction.DESC, "releaseDate"));
         } else {
             return movieRepository.findAll();
@@ -66,17 +66,17 @@ public class MovieService {
 
 
     @Transactional
-    public List<Object[]> showMoviesByTitlePictureDate(){
+    public List<Object[]> showMoviesByTitlePictureDate() {
         return movieRepository.showMoviesByTitlePictureDate();
     }
 
     @Transactional
-    public List<Movie> findMovieByGenre(Integer genre){
+    public List<Movie> findMovieByGenre(Integer genre) {
         return movieRepository.findByGenre(genre);
     }
 
     @Transactional
-    public Optional<Movie> findById(Integer movieId){
+    public Optional<Movie> findById(Integer movieId) {
         return movieRepository.findById(movieId);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.alkemyChallenge.services;
 
-import com.example.alkemyChallenge.entities.DisneyCharacter;
 import com.example.alkemyChallenge.entities.Genre;
 import com.example.alkemyChallenge.entities.Movie;
 import com.example.alkemyChallenge.repositories.GenreRepository;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +42,7 @@ public class GenreService {
     }
 
     @Transactional
-    public Optional<Genre> findById(Integer id){
+    public Optional<Genre> findById(Integer id) {
         return genreRepository.findById(id);
     }
 }

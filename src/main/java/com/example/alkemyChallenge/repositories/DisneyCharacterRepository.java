@@ -14,7 +14,6 @@ public interface DisneyCharacterRepository extends JpaRepository<DisneyCharacter
 
     @Modifying
     @Query("UPDATE DisneyCharacter c SET c.status = true WHERE c.id = :id")
-//    @Query(value = "SELECT p FROM Producto p WHERE CONCAT(trim(p.nombre),trim(p.marca.nombre),trim(p.precio)) LIKE %:busqueda%")
     void enableCharacter(@Param("id") Integer id);
 
     @Query(value = "SELECT picture, name FROM characters", nativeQuery = true)

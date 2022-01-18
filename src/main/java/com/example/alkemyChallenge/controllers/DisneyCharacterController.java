@@ -1,20 +1,15 @@
 package com.example.alkemyChallenge.controllers;
 
 import com.example.alkemyChallenge.entities.DisneyCharacter;
-import com.example.alkemyChallenge.entities.Movie;
 import com.example.alkemyChallenge.services.DisneyCharacterService;
 import com.example.alkemyChallenge.services.PictureService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
-
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,11 +24,13 @@ public class DisneyCharacterController {
 
     @GetMapping
     public List<Object[]> showNamePictureCharacter(){
+
         return disneyCharacterService.showNamePictureCharacter();
     }
 
     @GetMapping("/all")
     public List<DisneyCharacter> showAllCharacter() {
+
         return disneyCharacterService.showAllCharacter();
     }
 
@@ -87,6 +84,5 @@ public class DisneyCharacterController {
             return "Character Nº  " + id + " does not exist.";
         }
     }
-
 
 }

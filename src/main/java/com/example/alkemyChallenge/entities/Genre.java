@@ -24,7 +24,7 @@ public class Genre {
     @Column
     @NotBlank(message = "Name is required")
     private String name;
-    
+
     @OneToMany(mappedBy = "genre")
     @JsonIgnore
     private List<Movie> moviesList;
@@ -50,11 +50,11 @@ public class Genre {
 
     @Override
     public String toString() {
-        return  "\t~ GENRES ~" +
+        return "\t~ GENRES ~" +
                 "\n • ID: " + id +
                 "\n • Genre: " + name +
                 "\n • Films: " + moviesList +
-                "\n • Picture: " + picture  +
+                "\n • Picture: " + picture +
                 "\n • Status: " + status;
     }
 }

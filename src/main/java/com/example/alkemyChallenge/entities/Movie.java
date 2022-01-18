@@ -13,7 +13,7 @@ import org.hibernate.annotations.SQLDelete;
 
 
 @Entity
-@SQLDelete(sql = "UPDATE movie SET status = false WHERE id = ?")
+@SQLDelete(sql = "UPDATE movie SET status = false WHERE movie_id = ?")
 @Getter
 @Setter
 public class Movie {
@@ -40,7 +40,6 @@ public class Movie {
     @JoinTable(name = "rel_character_movie",
             joinColumns = @JoinColumn(name = "id_movie", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "id_character", nullable = false))
-    //@NotEmpty(message = "Character List is required")
     private List<DisneyCharacter> charactersList;
 
     @ManyToOne

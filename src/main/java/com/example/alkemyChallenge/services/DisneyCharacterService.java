@@ -7,7 +7,6 @@ import com.example.alkemyChallenge.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +75,6 @@ public class DisneyCharacterService {
     public Optional<DisneyCharacter> findCharacterById(Integer id) {
         return disneyCharacterRepository.findById(id);
     }
-
 
     @Transactional
     public List<DisneyCharacter> findCharactersByMovie(Integer movieId) throws Exception {

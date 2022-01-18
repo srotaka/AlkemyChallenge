@@ -27,7 +27,6 @@ public class GenreController {
     }
 
     @PostMapping("/save")
-
     public Genre saveGenre(@Valid @ModelAttribute Genre genre, BindingResult bindingResult, @RequestParam(value="picture")MultipartFile photo) throws Exception{
         if (!photo.isEmpty()) {
             genre.setPicture(pictureService.savePhoto(photo));

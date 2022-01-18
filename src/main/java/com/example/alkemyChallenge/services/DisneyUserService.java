@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,7 +41,7 @@ public class DisneyUserService implements UserDetailsService {
     private final String MESSAGE = "There is no user with email:  %s";
 
     @Transactional
-    public DisneyUser createUser( DisneyUser disneyUser, MultipartFile photo) throws Exception, IOException {
+    public DisneyUser createUser(DisneyUser disneyUser) throws Exception, IOException {
 
         disneyUser.setPassword(enconder.encode(disneyUser.getPassword()));
 
@@ -51,8 +50,6 @@ public class DisneyUserService implements UserDetailsService {
         } else {
             disneyUser.setUserRol(UserRol.USER);
         }
-
-        if (!photo.isEmpty()) disneyUser.setPicture(pictureService.savePhoto(photo));
 
         disneyUser.setStatus(true);
         emailService.sendThread(disneyUser.getMail());
@@ -75,7 +72,7 @@ public class DisneyUserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public Optional <DisneyUser> getDisneyUsername(String mail) {
+    public Optional<DisneyUser> getDisneyUsername(String mail) {
         return disneyUserRepository.findByMail(mail);
     }
 
@@ -101,43 +98,18 @@ public class DisneyUserService implements UserDetailsService {
     }
 
     @Override
-    //Este método entra en juego cuando el usuario se loguea
+
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-        //chequea que el correo exista: permite el acceso o lanza una excepción
+
         DisneyUser disneyUser = disneyUserRepository.findByMail(mail)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(MESSAGE, mail)));
-        //La palabra ROLE_ (es la forma que reconoce los roles Spring) concatenada con el rol y el nombre de ese rol
-        //Acá genera los permisos y se los pasa al User
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + disneyUser.getUserRol().name());
 
-        //El Servlet se castea
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-
-        //Si la sesión no está creada, con true la va a crear
         HttpSession session = attributes.getRequest().getSession(true);
-
-        //session.setAttribute("id", user.getId());
-        session.setAttribute("name", disneyUser.getName());
         session.setAttribute("mail", disneyUser.getMail());
-        //session.setAttribute("password", user.getPassword());
-        session.setAttribute("userRol", disneyUser.getUserRol().name());
-        session.setAttribute("image", disneyUser.getPicture());
-        //session.setAttribute("status", user.getStatus());
-
-        //le paso las autorizaciones en el collections
+        session.setAttribute("password", disneyUser.getPassword());
         return new User(disneyUser.getMail(), disneyUser.getPassword(), Collections.singletonList(authority));
 
     }
-
- /*   @Transactional
-    public DisneyUser findByUserAndPassword(String usuario, String psw) throws Exception {
-        try {
-            Optional<DisneyUser> userOptional = disneyUserRepository.findByUserAndPassword(usuario, psw);
-            return userOptional.get();
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }*/
-
-
 }

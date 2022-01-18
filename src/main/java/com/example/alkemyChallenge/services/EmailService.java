@@ -17,8 +17,10 @@ public class EmailService {
 
     private String from;
     private static final String SUBJECT = "Disney Alkemy Challenge";
-    private static final String TEXT = "Thank you for registering in our application. \n" +
-            "Now you will be able to get to know the wonderful world of Disney, meet its characters and movies.";
+    private static final String TEXT = "Thank you for registering in our application. \n  " +
+            "Now you will be able to get to know the wonderful world of Disney, meet its characters and movies. " +
+            "\n Have fan!";
+
     public void sendThread(String to) {
         new Thread(() -> {
             SimpleMailMessage message = new SimpleMailMessage();
