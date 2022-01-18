@@ -4,6 +4,7 @@ API para explorar el mundo de Disney 🏰. Podremos conocer y modificar los
 personajes 🧜 y conocer en qué películas 🎬 participaron.
 
 💻 Funciones principales:
+
 🔹 CRUD de personajes, películas y géneros
 
 🔹 Listado de personajes por nombre y foto
