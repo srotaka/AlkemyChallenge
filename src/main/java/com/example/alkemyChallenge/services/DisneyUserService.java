@@ -36,14 +36,14 @@ public class DisneyUserService implements UserDetailsService {
     private EmailService emailService;
 
     @Autowired
-    private BCryptPasswordEncoder enconder;
+    private BCryptPasswordEncoder encoder;
 
-    private final String MESSAGE = "There is no user with email:  %s";
+    private final String MESSAGE = "Email not valid";
 
     @Transactional
     public DisneyUser createUser(DisneyUser disneyUser) throws Exception, IOException {
 
-        disneyUser.setPassword(enconder.encode(disneyUser.getPassword()));
+        disneyUser.setPassword(encoder.encode(disneyUser.getPassword()));
 
         if (disneyUserRepository.findAll().isEmpty()) {
             disneyUser.setUserRol(UserRol.ADMIN);
@@ -98,11 +98,11 @@ public class DisneyUserService implements UserDetailsService {
     }
 
     @Override
-
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
 
         DisneyUser disneyUser = disneyUserRepository.findByMail(mail)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(MESSAGE, mail)));
+
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + disneyUser.getUserRol().name());
 
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -111,5 +111,14 @@ public class DisneyUserService implements UserDetailsService {
         session.setAttribute("password", disneyUser.getPassword());
         return new User(disneyUser.getMail(), disneyUser.getPassword(), Collections.singletonList(authority));
 
+    }
+
+    @Transactional
+    public boolean checkPassword(String password1, String password2) {
+        if (encoder.matches(password1, password2)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

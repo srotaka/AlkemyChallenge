@@ -5,6 +5,7 @@ import com.example.alkemyChallenge.entities.Movie;
 import com.example.alkemyChallenge.services.MovieService;
 import com.example.alkemyChallenge.services.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,6 +54,7 @@ public class MovieController {
         return movieService.sortMovieByDate(order);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "delete/{movieId}")
     public String deleteMovie(@PathVariable("movieId") Integer movieId){
         try {
@@ -62,6 +64,8 @@ public class MovieController {
             return "Movie Nº "+movieId+" does not exist.";
         }
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "enable/{movieId}")
     public String enableMovie(@PathVariable("movieId") Integer movieId) {
         try {
@@ -72,6 +76,7 @@ public class MovieController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public Movie saveMovie(@Valid @ModelAttribute Movie movie, BindingResult result, @RequestParam (value = "picture") MultipartFile photo) throws Exception{
         if (!photo.isEmpty()) {

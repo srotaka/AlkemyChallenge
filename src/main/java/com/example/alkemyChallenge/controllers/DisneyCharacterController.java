@@ -6,6 +6,7 @@ import com.example.alkemyChallenge.services.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,12 +60,14 @@ public class DisneyCharacterController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public DisneyCharacter saveCharacter(@Valid @ModelAttribute DisneyCharacter disneyCharacter, BindingResult result, @RequestParam (value = "picture") MultipartFile photo) throws Exception{
 
         return disneyCharacterService.createCharacter(disneyCharacter, photo);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "delete/{id}")
     public String deleteCharacter(@PathVariable("id") Integer id){
         try {
@@ -75,6 +78,7 @@ public class DisneyCharacterController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "enable/{id}")
     public String enableCharacter(@PathVariable("id") Integer id) {
         try {

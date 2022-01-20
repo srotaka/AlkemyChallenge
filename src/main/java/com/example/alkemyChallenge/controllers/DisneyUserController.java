@@ -8,12 +8,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
-public class    DisneyUserController {
+public class DisneyUserController {
 
     @Autowired
     private DisneyUserService disneyUserService;
@@ -30,11 +32,6 @@ public class    DisneyUserController {
     private PictureService pictureService;
 
     private DisneyUser disneyUser;
-
-/*    @PostMapping("/register")
-    public DisneyUser createUser(@Valid @ModelAttribute DisneyUser disneyUser, BindingResult bindingResult, @RequestParam(value = "picture") MultipartFile photo) throws Exception {
-        return disneyUserService.createUser(disneyUser, photo);
-    }*/
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @ModelAttribute DisneyUser disneyUser, BindingResult result, @RequestParam(value = "picture") MultipartFile photo) {
@@ -66,9 +63,14 @@ public class    DisneyUserController {
                 if (userDetails == null) {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"Error: User not found.\"}");
                 }
-                String token = getJWTToken(disneyUser.getMail());
-                disneyUser.setToken(token);
-                return ResponseEntity.status(HttpStatus.OK).body("Mail: " + disneyUser.getMail() + "\nToken: " + disneyUser.getToken());
+                if (disneyUserService.checkPassword(disneyUser.getPassword(), userDetails.getPassword())) {
+
+                    String token = getJWTToken(disneyUser.getMail());
+                    disneyUser.setToken(token);
+                    return ResponseEntity.status(HttpStatus.OK).body("Mail: " + disneyUser.getMail() + "\nToken: " + disneyUser.getToken());
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"Error: Password not valid.\"}");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,6 +99,7 @@ public class    DisneyUserController {
         return "Bearer " + token;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public List<DisneyUser> getAll() {
         return disneyUserService.getDisneyUser();

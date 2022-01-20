@@ -4,6 +4,7 @@ import com.example.alkemyChallenge.entities.Genre;
 import com.example.alkemyChallenge.services.GenreService;
 import com.example.alkemyChallenge.services.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,7 @@ public class GenreController {
         return genreService.showAllGenres();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public Genre saveGenre(@Valid @ModelAttribute Genre genre, BindingResult bindingResult, @RequestParam(value="picture")MultipartFile photo) throws Exception{
         if (!photo.isEmpty()) {
@@ -34,6 +36,7 @@ public class GenreController {
         return genreService.createGenre(genre);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "delete/{id}")
     public String deleteGenre(@PathVariable("id") Integer id){
         try {
@@ -44,6 +47,7 @@ public class GenreController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "enable/{id}")
     public String enableGenre(@PathVariable("id") Integer id) {
         try {
